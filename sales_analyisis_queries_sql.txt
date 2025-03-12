@@ -1,0 +1,32 @@
+SELECT * FROM sales limit 10;
+DESC sales;
+-- Total Sales and Profit
+SELECT 
+    ROUND(SUM(Sales), 2) AS Total_Sales,
+    ROUND(SUM(Profit), 2) AS Total_Profit,
+    ROUND((SUM(Profit) / SUM(Sales)) * 100, 2) AS Profit_Margin_Percentage
+FROM sales;
+-- Top 5 most profitable Products
+SELECT Product_Name, ROUND(SUM(Profit), 2) AS Total_Profit
+FROM sales
+GROUP BY Product_Name
+ORDER BY Total_Profit DESC
+LIMIT 5;
+-- Monthly Sale Trend
+SELECT 
+    DATE_FORMAT(Order_Date, '%Y-%m') AS Month,
+    ROUND(SUM(Sales), 2) AS Total_Sales
+FROM sales
+GROUP BY Month
+ORDER BY Month; 
+-- Repeat Customers
+SELECT Customer_ID, COUNT(DISTINCT Order_ID) AS Total_Orders
+FROM sales
+GROUP BY Customer_ID
+HAVING Total_Orders > 1
+ORDER BY Total_Orders DESC;
+-- Sales by Product Category
+SELECT Category, ROUND(SUM(Sales), 2) AS Total_Sales
+FROM sales
+GROUP BY Category
+ORDER BY Total_Sales;
